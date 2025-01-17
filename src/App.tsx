@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
@@ -6,11 +6,25 @@ import "./App.css";
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
+  const [num1, setNum1] = useState(0);
+  const [num2, setNum2] = useState(0);
+  const [numSum, setNumSum] = useState(0);
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     setGreetMsg(await invoke("greet", { name }));
   }
+
+  async function getSum() {
+    const a = await invoke("add_number", { num1, num2 });
+
+    console.log(a);
+    setNumSum(a as number);
+  }
+
+  useEffect(() => {
+    getSum();
+  }, [num1, num2]);
 
   return (
     <main className="container">
@@ -44,6 +58,21 @@ function App() {
         <button type="submit">Greet</button>
       </form>
       <p>{greetMsg}</p>
+      <input
+        type="number"
+        onChange={(e) => {
+          setNum1(Number(e.target.value));
+        }}
+      ></input>
+      <input
+        type="number"
+        onChange={(e) => {
+          setNum2(Number(e.target.value));
+        }}
+      ></input>
+      <div>{num1}</div>
+      <div>{num2}</div>
+      <div>{numSum}</div>
     </main>
   );
 }
