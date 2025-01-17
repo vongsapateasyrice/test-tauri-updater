@@ -17,6 +17,7 @@ async function checkAndUpdate() {
   console.log("hasUpdate", update?.available);
   console.log("currentver", update?.currentVersion);
   console.log("ver", update?.version);
+  console.log(await update?.download());
 }
 
 async function runApp() {
