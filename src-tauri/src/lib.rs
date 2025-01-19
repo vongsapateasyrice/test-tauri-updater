@@ -32,7 +32,7 @@ pub fn run() {
   
       // alternatively we could also call update.download() and update.install() separately
       match update
-        .download(
+        .download_and_install(
           |chunk_length, content_length| {
             downloaded += chunk_length;
             println!("downloaded {downloaded} from {content_length:?}");
@@ -43,9 +43,9 @@ pub fn run() {
 
         )
         .await {
-          Ok(data) => {
+          Ok(_) => {
             // Handle successful download
-            println!("Download successful, got {} bytes", data.len());
+            println!("Download successful")
             // Use data here...
           },
           Err(e) => {
@@ -54,6 +54,7 @@ pub fn run() {
             // Additional error handling...
           }
         }
+      
       println!("update downloaded :3");
       println!("update installed");
       app.restart();
