@@ -6,11 +6,11 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_log::Builder::new()
         .target(tauri_plugin_log::Target::new(
-        tauri_plugin_log::TargetKind::Stdout,
+          tauri_plugin_log::TargetKind::Stdout,
         ))
         .target(tauri_plugin_log::Target::new(
-        tauri_plugin_log::TargetKind::LogDir {
-          file_name: Some("logs".to_string()),
+          tauri_plugin_log::TargetKind::LogDir {
+            file_name: Some("logs".to_string()),
           },
         ))
         .build())
@@ -42,30 +42,18 @@ pub fn run() {
       log::info!("sign: {}", update.signature);
   
       // alternatively we could also call update.download() and update.install() separately
-      match update
-        .download_and_install(
-          |chunk_length, content_length| {
-            downloaded += chunk_length;
-            log::info!("downloaded {downloaded} from {content_length:?}");
-          },
-          || {
-            log::info!("download finished");
-          },
-
-        )
-        .await {
-          Ok(_) => {
-            // Handle successful download
-            log::info!("Download successful")
-            // Use data here...
-          },
-          Err(e) => {
-            // Handle error case
-            log::info!("Download failed: {}", e);
-            // Additional error handling...
-          }
-        }
-      log::info!("update installed");
+      update
+      .download_and_install(
+        |chunk_length, content_length| {
+          downloaded += chunk_length;
+          println!("downloaded {downloaded} from {content_length:?}");
+        },
+        || {
+          println!("download finished");
+        },
+      )
+      .await?;
+      println!("update installed");
       // app.restart();
     } else {
       log::info!("no update aw :(")
