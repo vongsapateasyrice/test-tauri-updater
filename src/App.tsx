@@ -28,7 +28,7 @@ function App() {
 
   return (
     <main className="container">
-      <h1>Version 0.3.0</h1>
+      <h1>Version 0.4.0</h1>
 
       <div className="row">
         <a href="https://vitejs.dev" target="_blank">
